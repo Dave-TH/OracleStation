@@ -370,7 +370,7 @@ GLOBAL_LIST_INIT(gang_outfit_pool, list(/obj/item/clothing/suit/jacket/leather, 
 			round_credits += "<center><h2>[gangster.name] as a [G.name] gangster</h2>"
 		if(len_before_addition == round_credits.len)
 			round_credits += list("<center><h2>The [G.name] Gang was wiped out!</h2>", "<center><h2>The competition was too tough!</h2>")
-	round_credits += "<br>"
+		round_credits += "<br>"
 
 	round_credits += ..()
 	return round_credits
