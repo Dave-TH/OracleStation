@@ -665,6 +665,15 @@
 				round_credits += list("<center><h2>A serious bureaucratic error has occurred!</h2>", "<center><h2>Noone was in charge of the crew!</h2>")
 		round_credits += "<br>"
 
+		// SILICONS
+		round_credits += "<center><h1>The Silicon Intelligences:</h1>"
+		len_before_addition = round_credits.len
+		for(var/datum/mind/current in SSticker.mode.get_all_silicon())
+				round_credits += "<center><h2>[current.name] as the [current.assigned_role]</h2>"
+		if(round_credits.len == len_before_addition)
+				round_credits += list("<center><h2>[station_name()] had no silicon helpers!</h2>", "<center><h2>Not a single door was opened today!</h2>")
+		round_credits += "<br>"
+
 		// SECURITY
 		round_credits += "<center><h1>The Brave Security Officers:</h1>"
 		len_before_addition = round_credits.len
@@ -701,17 +710,8 @@
 				round_credits += list("<center><h2>Noone was doing \"science\" today!</h2>", "<center><h2>Everyone probably made it out alright, then!</h2>")
 		round_credits += "<br>"
 
-		// SILICONS
-		round_credits += "<center><h1>The Loyal Silicon Workers:</h1>"
-		len_before_addition = round_credits.len
-		for(var/datum/mind/current in SSticker.mode.get_all_silicon())
-				round_credits += "<center><h2>[current.name] as the [current.assigned_role]</h2>"
-		if(round_credits.len == len_before_addition)
-				round_credits += list("<center><h2>[station_name()] had no silicon helpers!</h2>", "<center><h2>Not a single door was opened today!</h2>")
-		round_credits += "<br>"
-
 		// CARGO
-		round_credits += "<center><h1>The Ruggen Cargo Crew:</h1>"
+		round_credits += "<center><h1>The Rugged Cargo Crew:</h1>"
 		len_before_addition = round_credits.len
 		for(var/datum/mind/current in SSticker.mode.get_all_cargo())
 				round_credits += "<center><h2>[current.name] as the [current.assigned_role]</h2>"
