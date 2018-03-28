@@ -7,31 +7,19 @@ GLOBAL_LIST(end_titles)
 
 /client/proc/RollCredits()
 	set waitfor = FALSE
-
 	if(!GLOB.end_titles)
 		GLOB.end_titles = SSticker.mode.generate_credit_text()
-
 	LAZYINITLIST(credits)
-
 	if(!credits)
 		return
-
 	var/list/_credits = credits
 	verbs += /client/proc/ClearCredits
-
-	var/obj/screen/credit/title_card/title = new(null, null, src, SSticker.mode.title_icon)
-	_credits += title
-	title.rollem()
-
+	_credits += new /obj/screen/credit/title_card(null, null, src, SSticker.mode.title_icon)
 	sleep(CREDIT_SPAWN_SPEED * 3)
-
 	for(var/I in GLOB.end_titles)
-		var/obj/screen/credit/T = new(null, I, src)
-		_credits += T
-		T.rollem()
+		_credits += new /obj/screen/credit(null, I, src)
 		sleep(CREDIT_SPAWN_SPEED)
 	sleep(CREDIT_ROLL_SPEED - CREDIT_SPAWN_SPEED)
-
 	ClearCredits()
 	verbs -= /client/proc/ClearCredits
 
@@ -56,19 +44,14 @@ GLOBAL_LIST(end_titles)
 	maptext = credited
 	maptext_height = world.icon_size * 2
 	maptext_width = world.icon_size * 14
-
-/obj/screen/credit/proc/rollem()
 	var/matrix/M = matrix(transform)
 	M.Translate(0, CREDIT_ANIMATE_HEIGHT)
 	animate(src, transform = M, time = CREDIT_ROLL_SPEED)
 	target = M
 	animate(src, alpha = 255, time = CREDIT_EASE_DURATION, flags = ANIMATION_PARALLEL)
-	spawn(CREDIT_ROLL_SPEED - CREDIT_EASE_DURATION)
-		if(!QDELETED(src))
-			animate(src, alpha = 0, transform = target, time = CREDIT_EASE_DURATION)
-			sleep(CREDIT_EASE_DURATION)
-			qdel(src)
-	parent.screen += src
+	addtimer(CALLBACK(src, .proc/FadeOut), CREDIT_ROLL_SPEED - CREDIT_EASE_DURATION)
+	QDEL_IN(src, CREDIT_ROLL_SPEED)
+	P.screen += src
 
 /obj/screen/credit/Destroy()
 	var/client/P = parent
@@ -78,11 +61,14 @@ GLOBAL_LIST(end_titles)
 	parent = null
 	return ..()
 
+/obj/screen/credit/proc/FadeOut()
+	animate(src, alpha = 0, transform = target, time = CREDIT_EASE_DURATION)
+
 /obj/screen/credit/title_card
 	icon = 'icons/title_cards.dmi'
 	screen_loc = "4,1"
 
 /obj/screen/credit/title_card/Initialize(mapload, credited, client/P, title_icon_state)
+	icon_state = title_icon_state
 	.=..()
 	maptext = null
-	icon_state = title_icon_state

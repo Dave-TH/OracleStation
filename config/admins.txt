@@ -8,5 +8,5 @@
 # NOTE: syntax was changed to allow hyphenation of ranknames, since spaces are stripped.      #
 ###############################################################################################
 Purpose2 = Admin
-FlattestGuitar9 = Admin
+DaveTheHeadcrab = Admin
 Alffd = Host
